@@ -9,6 +9,14 @@ use App\Http\Controllers\Controller;
 class ProductController extends Controller
 {
     private $filePath = 'products.json';
+
+    public function index()
+    {
+        $data = File::exists(storage_path($this->filePath)) ? json_decode(File::get(storage_path($this->filePath)), true) : [];
+
+        return view('welcome', compact('data'));
+    }
+
     public function store(Request $request)
     {
         $products = File::exists(storage_path($this->filePath)) ? json_decode(File::get(storage_path($this->filePath)), true) : [];
