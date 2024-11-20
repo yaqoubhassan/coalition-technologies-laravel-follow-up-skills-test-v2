@@ -1,16 +1,16 @@
 [
     {
         "product_name": "First Product",
-        "quantity_in_stock": 5,
-        "price_per_item": 10,
-        "date_submitted": "2024-11-20 13:32:33",
-        "total_value": 50
+        "quantity_in_stock": 2,
+        "price_per_item": 5,
+        "date_submitted": "2024-11-20 14:47:11",
+        "total_value": 10
     },
     {
         "product_name": "Second Product",
-        "quantity_in_stock": 2,
-        "price_per_item": 7,
-        "date_submitted": "2024-11-20 13:40:50",
-        "total_value": 14
+        "quantity_in_stock": 3,
+        "price_per_item": 10,
+        "date_submitted": "2024-11-20 14:47:20",
+        "total_value": 30
     }
 ]
