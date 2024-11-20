@@ -38,4 +38,23 @@ class ProductController extends Controller
             'data' => $products
         ]);
     }
+
+    public function update(Request $request)
+    {
+        $products = json_decode(File::get(storage_path($this->filePath)), true);
+
+        $index = $request->input('index');
+
+        $products[$index] = [
+            'product_name' => $request->input('product_name'),
+            'quantity_in_stock' => (int)$request->input(('quantity_in_stock')),
+            'price_per_item' => (float)$request->input('price_per_item'),
+            'date_submitted' => $products[$index]['date_submitted'],
+            'total_value' => (int)$request->input('quantity_in_stock') * (float)$request->input('price_per_item')
+        ];
+
+        File::put(storage_path($this->filePath), json_encode($products, JSON_PRETTY_PRINT));
+
+        return response()->json(['success' => true, 'data' => $products]);
+    }
 }
