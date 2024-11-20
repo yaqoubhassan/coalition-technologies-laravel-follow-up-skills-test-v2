@@ -28,7 +28,7 @@
                         placeholder="Price per Item" required>
                 </div>
             </div>
-            <div class="text-end"><button type="submit" class="btn btn-primary mt-3">Submit</button></div>
+            <div class="text-end"><button type="submit" class="btn btn-success mt-3">Submit</button></div>
         </form>
 
         <table class="table table-bordered">
@@ -37,11 +37,30 @@
                     <th>Product Name</th>
                     <th>Quantity in Stock</th>
                     <th>Price per Item</th>
-                    <th>Datetime Submitted</th>
+                    <th>Date Submitted</th>
                     <th>Totale Value</th>
                     <th>Actions</th>
                 </tr>
             </thead>
+            <tbody id="productTable">
+                @php $sumTotal = 0; @endphp
+                @foreach ($data as $index => $row)
+                    <tr>
+                        <td>{{ $row['product_name'] }}</td>
+                        <td>{{ $row['quantity_in_stock'] }}</td>
+                        <td>{{ $row['price_per_item'] }}</td>
+                        <td>{{ $row['date_submitted'] }}</td>
+                        <td>{{ $row['total_value'] }}</td>
+                        <td><button class="btn btn-sm btn-warning edit-btn" data-index={{ $index }}>Edit</button>
+                        </td>
+                    </tr>
+                    @php $sumTotal += $row['total_value']; @endphp
+                @endforeach
+                <tr>
+                    <td colspan="4" class="text-end fw-bold">Total:</td>
+                    <td colspan="2">{{ $sumTotal }}</td>
+                </tr>
+            </tbody>
         </table>
     </div>
 
@@ -52,11 +71,45 @@
                 $.ajax({
                     url: '/products',
                     type: 'POST',
+                    data: $(this).serialize(),
+                    success: function(response) {
+                        updateTable(response.data);
+                    }
                 });
             });
 
 
         });
+
+        function updateTable(data) {
+            let rows = '';
+            let sumTotal = 0;
+
+            data.forEach((item, index) => {
+                rows += `
+                    <tr>
+                        <td>${item.product_name}</td>
+                        <td>${item.quantity_in_stock}</td>
+                        <td>${item.price_per_item}</td>
+                        <td>${item.datetime_submitted}</td>
+                        <td>${item.total_value}</td>
+                        <td>
+                            <button class="btn btn-sm btn-warning edit-btn" data-index="${index}">Edit</button>
+                        </td>
+                    </tr>
+                `;
+                sumTotal += item.total_value;
+            });
+
+            rows += `
+                <tr>
+                    <td colspan="4" class="text-end fw-bold">Total:</td>
+                    <td colspan="2">${sumTotal}</td>
+                </tr>
+            `;
+
+            $('#productTable').html(rows);
+        }
     </script>
 </body>
 
