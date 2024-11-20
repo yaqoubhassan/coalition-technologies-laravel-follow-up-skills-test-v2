@@ -28,7 +28,7 @@
                         placeholder="Price per Item" required>
                 </div>
             </div>
-            <div class="text-end"><button type="submit" class="btn btn-success mt-3">Submit</button></div>
+            <div class="text-end"><button type="submit" class="btn btn-primary mt-3">Submit</button></div>
         </form>
 
         <table class="table table-bordered">
@@ -74,11 +74,53 @@
                     data: $(this).serialize(),
                     success: function(response) {
                         updateTable(response.data);
+                        $('#productForm')[0].reset();
                     }
                 });
             });
 
 
+        });
+
+        $(document).on('click', '.edit-btn', function() {
+            const index = $(this).data('index');
+            const row = $(this).closest('tr');
+            const productName = row.find('td:eq(0)').text();
+            const quantity = row.find('td:eq(1)').text();
+            const price = row.find('td:eq(2)').text();
+
+            row.html(`
+                <td><input type="text" class="form-control" value="${productName}" id="edit-name-${index}"></td>
+                <td><input type="number" class="form-control" value="${quantity}" id="edit-quantity-${index}"></td>
+                <td><input type="number" step="0.01" class="form-control" value="${price}" id="edit-price-${index}"></td>
+                <td></td>
+                <td></td>
+                <td>
+                    <button class="btn btn-sm btn-success save-btn" data-index="${index}">Save</button>
+                </td>
+            `);
+        });
+
+        $(document).on('click', '.save-btn', function() {
+            const index = $(this).data('index');
+            const productName = $(`#edit-name-${index}`).val();
+            const quantity = $(`#edit-quantity-${index}`).val();
+            const price = $(`#edit-price-${index}`).val();
+
+            $.ajax({
+                url: '/products/update',
+                type: 'POST',
+                data: {
+                    index,
+                    product_name: productName,
+                    quantity_in_stock: quantity,
+                    price_per_item: price,
+                    _token: '{{ csrf_token() }}'
+                },
+                success: function(response) {
+                    updateTable(response.data);
+                }
+            });
         });
 
         function updateTable(data) {
@@ -91,7 +133,7 @@
                         <td>${item.product_name}</td>
                         <td>${item.quantity_in_stock}</td>
                         <td>${item.price_per_item}</td>
-                        <td>${item.datetime_submitted}</td>
+                        <td>${item.date_submitted}</td>
                         <td>${item.total_value}</td>
                         <td>
                             <button class="btn btn-sm btn-warning edit-btn" data-index="${index}">Edit</button>
