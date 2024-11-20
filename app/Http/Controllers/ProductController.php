@@ -14,7 +14,7 @@ class ProductController extends Controller
     {
         $data = File::exists(storage_path($this->filePath)) ? json_decode(File::get(storage_path($this->filePath)), true) : [];
 
-        return view('welcome', compact('data'));
+        return view('home', compact('data'));
     }
 
     public function store(Request $request)
