@@ -11,7 +11,7 @@ A simple laravel application for creating, listing and updating products
     ```
 
 ## Run Project
-1. Run the following commands in two separate terminals
+1. Run the following command to serve the application
 
     ```bash
     php artisan serve
