@@ -31,7 +31,18 @@
             <div class="text-end"><button type="submit" class="btn btn-primary mt-3">Submit</button></div>
         </form>
 
-
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Product Name</th>
+                    <th>Quantity in Stock</th>
+                    <th>Price per Item</th>
+                    <th>Datetime Submitted</th>
+                    <th>Totale Value</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+        </table>
     </div>
 
     <script>
